@@ -11,6 +11,7 @@ module Coala
     , Column
     , Affect
     , CodeRef
+    , codeRef
     , encodeResults
     ) where
 
@@ -53,6 +54,7 @@ data Result = Result  { message :: String
                       , severity :: Severity
                       } deriving (Eq, Show)
 
+codeRef fn (sl,sc) (el, ec) = Affect (CodeRef fn sl sc) (CodeRef fn el ec)
 
 instance ToJSON Severity where
     toJSON (Severity sev) = toJSON sev
