@@ -84,7 +84,7 @@ instance ToJSON Affect where
                                 then file s
                                 else Filename ""
                     , "start" .= s
-                    , "end" .= s
+                    , "end" .= e
                     ]
 
 encodeResult :: String -> Result -> Value
