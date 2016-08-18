@@ -2,6 +2,9 @@
 module Coala.Input.SingleFile
     ( SingleFile
     , singleFile
+    , filename
+    , file
+    , settings
     ) where
 
 import Coala ( Filename, emptyFilename, newFilename )
