@@ -1,7 +1,6 @@
 {-# LANGUAGE OverloadedStrings #-}
 module Coala
     ( Filename (Filename)
-    , filename
     , coala
     , coalaIO
     , Result (Result)
