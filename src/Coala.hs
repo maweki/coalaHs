@@ -35,11 +35,8 @@ coalaIO bearname reader bear = do
   putStr $ encode $ encodeResults bearname res
 
 newtype Severity = Severity Int deriving ( Show, Eq )
-newSeverity i = Severity i
 newtype Line = Line Int deriving ( Show, Eq )
-newLine i = Line i
 newtype Column = Column Int deriving ( Show, Eq )
-newColumn i = Column i
 
 data Affect = Affect  { start :: CodeRef
                       , end :: CodeRef
