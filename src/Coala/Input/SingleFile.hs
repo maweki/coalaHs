@@ -16,10 +16,9 @@ import Data.ByteString.Lazy ( ByteString )
 import Data.Maybe ( fromJust )
 import qualified Data.Text as T
 import qualified Data.Text.Lazy as TL
-import Data.Aeson ( (.:) )
+import Data.Aeson ( (.:), decode, Object )
 import Data.Aeson.Types ( parseMaybe )
 
-import Data.Aeson ( decode, Object )
 
 data SingleFile = SingleFile  { filename :: Filename -- ^ Source filename
                               , file :: [Text]     -- ^ Lines of source file

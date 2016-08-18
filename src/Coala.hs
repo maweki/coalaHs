@@ -21,8 +21,6 @@ import Data.Aeson ( ToJSON, toJSON, object, (.=), Value , encode )
 import Data.Maybe ( fromJust )
 
 newtype Filename = Filename String deriving ( Eq, Show )
-emptyFilename = Filename ""
-newFilename fn = Filename fn
 
 coala :: String -> (ByteString -> Maybe a) -> (a -> [Result]) -> IO ()
 coala bearname reader bear = do
