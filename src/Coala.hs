@@ -18,20 +18,21 @@ import Prelude hiding ( getContents, putStr )
 import Data.ByteString.Lazy ( putStr, ByteString, getContents )
 import Data.Text ( Text, empty )
 import Data.Aeson ( ToJSON, toJSON, object, (.=), Value , encode )
+import Data.Maybe ( fromJust )
 
 newtype Filename = Filename String deriving ( Eq, Show )
 emptyFilename = Filename ""
 newFilename fn = Filename fn
 
-coala :: String -> (ByteString -> a) -> (a -> [Result]) -> IO ()
+coala :: String -> (ByteString -> Maybe a) -> (a -> [Result]) -> IO ()
 coala bearname reader bear = do
   c <- getContents
-  putStr $ encode $ encodeResults bearname $ bear $ reader c
+  putStr $ encode $ encodeResults bearname $ bear $ fromJust $ reader c
 
-coalaIO :: String -> (ByteString -> a) -> (a -> IO [Result]) -> IO ()
+coalaIO :: String -> (ByteString -> Maybe a) -> (a -> IO [Result]) -> IO ()
 coalaIO bearname reader bear = do
   c <- getContents
-  res <- bear $ reader c
+  res <- bear $ fromJust $ reader c
   putStr $ encode $ encodeResults bearname res
 
 newtype Severity = Severity Int deriving ( Show, Eq )
