@@ -1,21 +1,15 @@
 {-# LANGUAGE OverloadedStrings #-}
 module Coala
-    ( Filename
-    , emptyFilename
-    , newFilename
+    ( Filename (Filename)
     , coala
     , coalaIO
-    , Result
-    , Severity
-    , Line
-    , Column
-    , Affect
-    , CodeRef
-    , codeRef
+    , Result (Result)
+    , Severity (Severity)
+    , Line (Line)
+    , Column (Column)
+    , Affect (Affect)
+    , CodeRef (CodeRef)
     , encodeResults
-    , newColumn
-    , newLine
-    , newSeverity
     ) where
 
 import Prelude hiding ( getContents, putStr )

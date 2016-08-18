@@ -1,13 +1,13 @@
 {-# LANGUAGE OverloadedStrings #-}
 module Coala.Input.SingleFile
-    ( SingleFile
+    ( SingleFile (SingleFile)
     , singleFile
     , filename
     , file
     , settings
     ) where
 
-import Coala ( Filename, emptyFilename, newFilename )
+import Coala ( Filename (Filename) )
 import Coala.Input ( Settings, emptySettings )
 
 import Data.Text ( Text )
@@ -32,4 +32,4 @@ singleFile content = do o <- decode content :: Maybe Object
                           fn <- obj .: "filename"
                           t <- obj .: "file"
                           s <- obj .: "settings"
-                          return $ SingleFile (newFilename fn) t s
+                          return $ SingleFile (Filename fn) t s
