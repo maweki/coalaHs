@@ -9,6 +9,7 @@ module Coala
     , Column (Column)
     , Affect (Affect)
     , CodeRef (CodeRef)
+    , codeRef
     , encodeResults
     ) where
 
