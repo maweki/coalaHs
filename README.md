@@ -44,6 +44,9 @@ To construct `Affect`s (and `CodeRef`s) more easily, we provide the following:
 
 You can look at an example bear at https://github.com/maweki/coalaCheckBear-hs
 
+If you're using `coalaIO` as `main`, you should not write to `stdout`. Since we're
+not in pureScript, we can not easily restrict what can be done in `IO [Result]`.
+
 ## Readers
 
 ```
