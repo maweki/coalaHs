@@ -68,5 +68,7 @@ First of all, coala has yet to have those bindings included. This is basically t
 * We currently only provide a single reader, while Coala does have multiple possible output formats for bears
 * The reader type (`ByteString -> Maybe a`) is very general. Maybe a typeclass restricting `a` would be nice
 * More helpers
+* Nicer names
 * Nice structs (some lense-like accessors would be nicer than the exports we now have - but we also have very few dependencies)
 * more documentation (when is it ever enough?)
+* check whether we need a more permissible license for our users
