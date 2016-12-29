@@ -40,7 +40,8 @@ data Result = Result  { message :: String
 To construct `Affect`s (and `CodeRef`s) more easily, we provide the following:
 
 * `codeRef :: Filename -> (Line, Maybe Column) -> (Line, Maybe Column) -> Affect`
-* `codeRefLine :: Filename -> Line -> Maybe Column -> (Int -> Int) -> Affect`
+* `codeRefLine :: Filename -> Line -> Affect`
+* `codeRefInLine :: Filename -> Line -> Maybe Column -> (Int -> Int) -> Affect`
 
 You can look at an example bear at https://github.com/maweki/coalaCheckBear-hs
 
