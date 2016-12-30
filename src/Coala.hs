@@ -1,16 +1,17 @@
 {-# LANGUAGE OverloadedStrings #-}
 module Coala
-    ( Filename (Filename)
+    ( Filename (..)
     , coala
     , coalaIO
-    , Result (Result)
-    , Severity (Severity)
-    , Line (Line)
-    , Column (Column)
-    , Affect (Affect)
-    , CodeRef (CodeRef)
+    , Result (..)
+    , Severity (..)
+    , Line (..)
+    , Column (..)
+    , Affect (..)
+    , CodeRef (..)
     , codeRef
     , codeRefLine
+    , codeRefInLine
     , encodeResults
     ) where
 
@@ -33,7 +34,14 @@ coalaIO bearname reader bear = do
   res <- bear $ fromJust $ reader c
   putStr $ encode $ encodeResults bearname res
 
-newtype Severity = Severity Int deriving ( Show, Eq )
+data Severity = Info | Normal | Major deriving ( Show, Eq, Ord )
+
+severityToInt :: Severity -> Int
+severityToInt s = case s of
+                    Info -> 0
+                    Normal -> 1
+                    Major -> 2
+
 newtype Line = Line Int deriving ( Show, Eq )
 newtype Column = Column Int deriving ( Show, Eq )
 
@@ -46,9 +54,9 @@ data CodeRef = CodeRef  { file :: Filename
                         , column :: Maybe Column
                         }  deriving (Eq, Show)
 
-data Result = Result  { message :: String
+data Result = Result  { severity :: Severity
+                      , message :: String
                       , affected :: [Affect]
-                      , severity :: Severity
                       } deriving (Eq, Show)
 
 codeRef fn (sl,sc) (el, ec) = Affect (CodeRef fn sl sc) (CodeRef fn el ec)
@@ -57,7 +65,7 @@ codeRefLine fn sl = Affect (CodeRef fn sl Nothing) (CodeRef fn sl Nothing)
 
 
 instance ToJSON Severity where
-    toJSON (Severity sev) = toJSON sev
+    toJSON sev = toJSON $ severityToInt sev
 
 instance ToJSON Filename where
     toJSON (Filename fn) = toJSON fn
