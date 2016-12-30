@@ -2,12 +2,12 @@
 module Coala.Input.SingleFile
     ( SingleFile (SingleFile)
     , singleFile
-    , filename
     , file
     , settings
     ) where
 
-import Coala ( Filename (Filename) )
+import Coala ( Filename (Filename), FileRef )
+import qualified Coala as C (filename)
 import Coala.Input ( Settings, emptySettings )
 
 import Data.Text ( Text )
@@ -24,6 +24,9 @@ data SingleFile = SingleFile  { filename :: Filename -- ^ Source filename
                               , file :: [Text]     -- ^ Lines of source file
                               , settings :: Settings -- ^ Settings
                               } deriving ( Eq, Show )
+
+instance FileRef SingleFile where
+    filename ref  = filename ref
 
 singleFile :: (ByteString -> Maybe SingleFile)
 singleFile content = do o <- decode content :: Maybe Object

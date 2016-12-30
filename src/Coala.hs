@@ -1,6 +1,6 @@
 {-# LANGUAGE OverloadedStrings #-}
 module Coala
-    ( Filename (..)
+    ( Filename(Filename)
     , coala
     , coalaIO
     , Result (..)
@@ -8,11 +8,12 @@ module Coala
     , Line (..)
     , Column (..)
     , Affect (..)
-    , CodeRef (..)
+    , CodeRef (line, column)
     , codeRef
     , codeRefLine
     , codeRefInLine
-    , encodeResults
+    , FileRef
+    , filename
     ) where
 
 import Prelude hiding ( getContents, putStr )
@@ -63,6 +64,11 @@ codeRef fn (sl,sc) (el, ec) = Affect (CodeRef fn sl sc) (CodeRef fn el ec)
 codeRefInLine fn sl sc f = Affect (CodeRef fn sl sc) (CodeRef fn sl (sc >>= \(Column s) -> Just $ Column $ f s))
 codeRefLine fn sl = Affect (CodeRef fn sl Nothing) (CodeRef fn sl Nothing)
 
+class FileRef a where
+    filename :: a -> Filename
+
+instance FileRef CodeRef where
+    filename ref  = file ref
 
 instance ToJSON Severity where
     toJSON sev = toJSON $ severityToInt sev
