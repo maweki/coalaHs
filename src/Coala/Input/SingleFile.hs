@@ -26,7 +26,7 @@ data SingleFile = SingleFile  { filename :: Filename -- ^ Source filename
                               } deriving ( Eq, Show )
 
 instance FileRef SingleFile where
-    filename ref  = filename ref
+    filename = filename
 
 singleFile :: (ByteString -> Maybe SingleFile)
 singleFile content = do o <- decode content :: Maybe Object

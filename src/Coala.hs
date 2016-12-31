@@ -68,7 +68,7 @@ class FileRef a where
     filename :: a -> Filename
 
 instance FileRef CodeRef where
-    filename ref  = file ref
+    filename  = file
 
 instance ToJSON Severity where
     toJSON sev = toJSON $ severityToInt sev
