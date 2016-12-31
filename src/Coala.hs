@@ -1,4 +1,5 @@
 {-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE FlexibleInstances #-}
 module Coala
     ( Filename(Filename)
     , coala
@@ -14,6 +15,9 @@ module Coala
     , codeRefInLine
     , FileRef
     , filename
+    , RefPoint
+    , (-->)
+    , (-+>)
     ) where
 
 import Prelude hiding ( getContents, putStr )
@@ -21,6 +25,7 @@ import Data.ByteString.Lazy ( putStr, ByteString, getContents )
 import Data.Text ( Text, empty )
 import Data.Aeson ( ToJSON, toJSON, object, (.=), Value , encode )
 import Data.Maybe ( fromJust )
+import Data.Tuple ( swap )
 
 newtype Filename = Filename String deriving ( Eq, Show )
 
@@ -61,8 +66,36 @@ data Result = Result  { severity :: Severity
                       } deriving (Eq, Show)
 
 codeRef fn (sl,sc) (el, ec) = Affect (CodeRef fn sl sc) (CodeRef fn el ec)
-codeRefInLine fn sl sc f = Affect (CodeRef fn sl sc) (CodeRef fn sl (sc >>= \(Column s) -> Just $ Column $ f s))
+codeRefInLine :: Filename -> Line -> Maybe Column -> (Int -> Int) -> Affect
+codeRefInLine fn sl sc f = Affect (CodeRef fn sl sc) (CodeRef fn sl (sc >>= \c -> Just $ columnMap f c))
 codeRefLine fn sl = Affect (CodeRef fn sl Nothing) (CodeRef fn sl Nothing)
+
+lineMap f (Line a) = Line $ f a
+columnMap f (Column a) = Column $ f a
+
+class RefPoint a where
+  (-->) :: a -> a -> (Filename -> Affect)
+  (-+>) :: a -> Int -> (Filename -> Affect)
+
+instance RefPoint Line where
+  from --> to = \fn -> codeRef fn (from, Nothing) (to, Nothing)
+  from -+> to = \fn -> codeRef fn (from, Nothing) (lineMap (to +) from, Nothing)
+
+instance RefPoint (Line, Column) where
+  from --> to = \fn -> codeRef fn (fst from, Just $ snd from) (fst to, Just $ snd to)
+  from -+> to = \fn -> codeRefInLine fn (fst from) (Just $ snd from) (to +)
+
+instance RefPoint (Line, Maybe Column) where
+  from --> to = \fn -> codeRef fn from to
+  from -+> to = \fn -> uncurry (codeRefInLine fn) from (to +)
+
+instance RefPoint (Column, Line) where
+  from --> to = swap from --> swap to
+  from -+> to = swap from -+> to
+
+instance RefPoint (Maybe Column, Line) where
+  from --> to = swap from --> swap to
+  from -+> to = swap from -+> to
 
 class FileRef a where
     filename :: a -> Filename
