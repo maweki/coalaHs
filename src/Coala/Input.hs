@@ -7,4 +7,4 @@ import qualified Data.Map as Map
 import Data.Aeson ( FromJSON )
 
 type Settings = Map.Map String String
-emptySettings = Map.empty
+emptySettings = Map.empty :: Settings
